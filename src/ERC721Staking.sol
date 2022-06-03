@@ -5,9 +5,10 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@thirdweb-dev/contracts/ThirdwebContract.sol";
+import "@thirdweb-dev/contracts/feature/ContractMetadata.sol";
+import "@thirdweb-dev/contracts/feature/PermissionsEnumerable.sol";
 
-contract ERC721Staking is ReentrancyGuard, ThirdwebContract {
+contract ERC721Staking is ReentrancyGuard, ContractMetadata, PermissionsEnumerable {
     using SafeERC20 for IERC20;
 
     // Interfaces for ERC20 and ERC721
@@ -39,6 +40,7 @@ contract ERC721Staking is ReentrancyGuard, ThirdwebContract {
     constructor(IERC721 _nftCollection, IERC20 _rewardsToken) {
         nftCollection = _nftCollection;
         rewardsToken = _rewardsToken;
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
     // If address already has ERC721 Token/s staked, calculate the rewards.
@@ -137,5 +139,11 @@ contract ERC721Staking is ReentrancyGuard, ThirdwebContract {
             ((block.timestamp - stakers[_staker].timeOfLastUpdate) *
                 stakers[msg.sender].amountStaked)
         ) * rewardsPerHour) / 3600);
+    }
+
+    // Permissions
+
+    function _canSetContractURI() internal view override returns (bool) {
+        return hasRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 }
