@@ -20,6 +20,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
       - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
 
       - name: deploy
         id: deploy
@@ -37,6 +39,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
       - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
 
       - name: publish
         id: publish
