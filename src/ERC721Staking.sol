@@ -8,8 +8,9 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@thirdweb-dev/contracts/feature/ContractMetadata.sol";
 import "@thirdweb-dev/contracts/feature/PermissionsEnumerable.sol";
 import "@thirdweb-dev/contracts/feature/Royalty.sol";
+import "@thirdweb-dev/contracts/feature/Multicall.sol";
 
-contract ERC721Staking is ReentrancyGuard, ContractMetadata, PermissionsEnumerable {
+contract ERC721Staking is ReentrancyGuard, ContractMetadata, PermissionsEnumerable, Royalty, Multicall {
     using SafeERC20 for IERC20;
 
     // Interfaces for ERC20 and ERC721
@@ -145,6 +146,10 @@ contract ERC721Staking is ReentrancyGuard, ContractMetadata, PermissionsEnumerab
     // Permissions
 
     function _canSetContractURI() internal view override returns (bool) {
+        return hasRole(DEFAULT_ADMIN_ROLE, msg.sender);
+    }
+
+    function _canSetRoyaltyInfo() internal view override returns (bool) {
         return hasRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 }
