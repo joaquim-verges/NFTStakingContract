@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@thirdweb-dev/contracts/feature/ContractMetadata.sol";
 import "@thirdweb-dev/contracts/feature/PermissionsEnumerable.sol";
+import "@thirdweb-dev/contracts/feature/Royalty.sol";
 
 contract ERC721Staking is ReentrancyGuard, ContractMetadata, PermissionsEnumerable {
     using SafeERC20 for IERC20;
